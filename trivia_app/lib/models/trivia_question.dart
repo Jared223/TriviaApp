@@ -4,7 +4,7 @@ class TriviaQuestion {
   final String category;
   final String type;
   final String difficulty;
-  final String question;
+  String question;
   final String correctAnswer;
   final List<String> incorrectAnswers;
 
