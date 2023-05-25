@@ -2,6 +2,15 @@
 
 Trivia App is a Flutter application that fetches trivia questions from an API and presents them to the user.
 
+![Main Menu](/assets/MainMenu.jpeg)
+*The Main Menu screen*
+
+![Question Screen](/assets/QuestionScreen.jpeg)
+*The questions and answer screen*
+
+![Game Over](/assets/GameOver.jpeg)
+*The Game Over screen allows you see your score and quickly jump back into the fun!*
+
 ## Features
 
 - Fetches trivia questions from an online API
