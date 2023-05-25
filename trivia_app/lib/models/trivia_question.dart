@@ -1,12 +1,10 @@
-// trivia_question.dart
-
 class TriviaQuestion {
-  final String category;
-  final String type;
-  final String difficulty;
+  String category;
+  String type;
+  String difficulty;
   String question;
-  final String correctAnswer;
-  final List<String> incorrectAnswers;
+  String correctAnswer;
+  List<String> incorrectAnswers;
 
   TriviaQuestion({
     required this.category,
@@ -17,6 +15,14 @@ class TriviaQuestion {
     required this.incorrectAnswers,
   });
 
+  // All answers (correct and incorrect) shuffled
+  List<String> get allAnswers {
+    var all = List<String>.from(incorrectAnswers)
+      ..add(correctAnswer)
+      ..shuffle();
+    return all;
+  }
+
   factory TriviaQuestion.fromJson(Map<String, dynamic> json) {
     return TriviaQuestion(
       category: json['category'],
@@ -24,7 +30,7 @@ class TriviaQuestion {
       difficulty: json['difficulty'],
       question: json['question'],
       correctAnswer: json['correct_answer'],
-      incorrectAnswers: List<String>.from(json['incorrect_answers'].map((x) => x)),
+      incorrectAnswers: List<String>.from(json['incorrect_answers']),
     );
   }
 }
