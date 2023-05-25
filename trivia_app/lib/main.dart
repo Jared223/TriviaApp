@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'screens/MainMenu.dart';
 import 'screens/SettingsScreen.dart';
 import 'package:trivia_app/models/Settings.dart';
+import 'package:audioplayers/audioplayers.dart';
+
 
 void main() {
   runApp(

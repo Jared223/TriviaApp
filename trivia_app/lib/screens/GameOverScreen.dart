@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'GameScreen.dart';
 import 'package:trivia_app/models/Settings.dart';
 
+
+
 class GameOverScreen extends StatelessWidget {
   final int score;
   final String category;

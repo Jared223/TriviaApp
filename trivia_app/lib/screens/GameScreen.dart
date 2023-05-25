@@ -3,6 +3,7 @@ import '../models/trivia_question.dart';
 import 'package:trivia_app/services/api_service.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'GameOverScreen.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class GameScreen extends StatefulWidget {
   final String category;
@@ -20,13 +21,17 @@ class _GameScreenState extends State<GameScreen> {
   int _score = 0;
   bool _gameEnded = false;
 
+  AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isMusicPlaying = false;
+
   @override
   void initState() {
     super.initState();
     _loadTriviaQuestions();
+    _playMusic("amerika.mp3"); // Play the "amerika.mp3" song on the MainMenu
   }
 
-  _loadTriviaQuestions() async {
+  void _loadTriviaQuestions() async {
     _questions = await _apiService.fetchTriviaQuestions(widget.category);
     for (var question in _questions) {
       question.question = HtmlCharacterEntities.decode(question.question);
@@ -34,11 +39,12 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {});
   }
 
-  _checkAnswer(String selectedAnswer) {
+  void _checkAnswer(String selectedAnswer) {
     if (_questions[_currentQuestionIndex].correctAnswer == selectedAnswer) {
       _score++;
     } else {
       _gameEnded = true;
+      _playMusic("sonne.mp3"); // Play the "sonne.mp3" song on the GameScreen
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -60,6 +66,31 @@ class _GameScreenState extends State<GameScreen> {
       _currentQuestionIndex++;
     }
     setState(() {});
+  }
+
+  Future<void> _playMusic(String musicPath) async {
+    await _audioPlayer.stop();
+    await _audioPlayer.play("assets/$musicPath", isLocal: true);
+    setState(() {
+      _isMusicPlaying = true;
+    });
+  }
+
+  void _toggleMusic() {
+    if (_isMusicPlaying) {
+      _audioPlayer.pause();
+    } else {
+      _audioPlayer.resume();
+    }
+    setState(() {
+      _isMusicPlaying = !_isMusicPlaying;
+    });
+  }
+
+  @override
+  void dispose() async {
+    _audioPlayer.dispose();
+    super.dispose();
   }
 
   @override
@@ -129,6 +160,14 @@ class _GameScreenState extends State<GameScreen> {
                   Text(
                     'Score: $_score',
                     style: TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                  SizedBox(height: 16),
+                  IconButton(
+                    icon: Icon(
+                      _isMusicPlaying ? Icons.music_note : Icons.music_off,
+                      color: Colors.white,
+                    ),
+                    onPressed: _toggleMusic,
                   ),
                 ],
               ),

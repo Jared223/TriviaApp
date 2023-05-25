@@ -5,6 +5,7 @@ import 'LeaderboardScreen.dart';
 import 'CopyrightScreen.dart';
 import 'GameScreen.dart';
 import 'package:trivia_app/models/Settings.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class MainMenu extends StatefulWidget {
   @override
@@ -13,6 +14,39 @@ class MainMenu extends StatefulWidget {
 
 class _MainMenuState extends State<MainMenu> {
   String selectedCategory = 'General Knowledge';
+  AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isMusicPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _playMusic("amerika.mp3"); // Play the "amerika.mp3" song on the MainMenu
+  }
+
+  Future<void> _playMusic(String musicPath) async {
+    await _audioPlayer.stop();
+    await _audioPlayer.play("assets/$musicPath", isLocal: true);
+    setState(() {
+      _isMusicPlaying = true;
+    });
+  }
+
+  void _toggleMusic() {
+    if (_isMusicPlaying) {
+      _audioPlayer.pause();
+    } else {
+      _audioPlayer.resume();
+    }
+    setState(() {
+      _isMusicPlaying = !_isMusicPlaying;
+    });
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,6 +227,14 @@ class _MainMenuState extends State<MainMenu> {
                     ),
                   );
                 },
+              ),
+              SizedBox(height: 10),
+              IconButton(
+                icon: Icon(
+                  _isMusicPlaying ? Icons.music_note : Icons.music_off,
+                  color: Colors.white,
+                ),
+                onPressed: _toggleMusic,
               ),
             ],
           ),
