@@ -3,8 +3,16 @@ import 'dart:convert';
 import 'package:trivia_app/models/trivia_question.dart'; // Import the TriviaQuestion class
 
 class ApiService {
-  Future<List<TriviaQuestion>> fetchTriviaQuestions() async {
-    final response = await http.get(Uri.parse('https://opentdb.com/api.php?amount=50&difficulty=medium&type=multiple'));
+  Map<String, String> categoryToApiId = {
+    'General Knowledge': '9',
+    'Science': '17',
+    'History': '23',
+    'Geography': '22',
+    'Arts': '25',
+  };
+
+  Future<List<TriviaQuestion>> fetchTriviaQuestions(String category) async {
+    final response = await http.get(Uri.parse('https://opentdb.com/api.php?amount=50&category=${categoryToApiId[category]}&difficulty=medium&type=multiple'));
 
     if (response.statusCode == 200) {
       // If the server returns a 200 OK response,

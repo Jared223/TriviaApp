@@ -6,7 +6,14 @@ import 'CopyrightScreen.dart';
 import 'GameScreen.dart';
 import 'package:trivia_app/models/Settings.dart';
 
-class MainMenu extends StatelessWidget {
+class MainMenu extends StatefulWidget {
+  @override
+  _MainMenuState createState() => _MainMenuState();
+}
+
+class _MainMenuState extends State<MainMenu> {
+  String selectedCategory = 'General Knowledge';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +54,40 @@ class MainMenu extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: DropdownButton<String>(
+                  value: selectedCategory,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedCategory = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'General Knowledge',
+                    'Science',
+                    'History',
+                    'Geography',
+                    'Arts'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              SizedBox(height: 20),
               Consumer<AppSettings>(
                 builder: (context, settings, _) {
                   return Text(
@@ -67,7 +108,10 @@ class MainMenu extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => GameScreen()),
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              GameScreen(category: selectedCategory),
+                        ),
                       );
                     },
                     child: Padding(

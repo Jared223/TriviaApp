@@ -5,11 +5,13 @@ import 'package:trivia_app/models/Settings.dart';
 
 class GameOverScreen extends StatelessWidget {
   final int score;
+  final String category;
   final VoidCallback onTryAgain;
   final VoidCallback onBackToMenu;
 
   GameOverScreen({
     required this.score,
+    required this.category,
     required this.onTryAgain,
     required this.onBackToMenu,
   });
@@ -55,7 +57,10 @@ class GameOverScreen extends StatelessWidget {
                         onTryAgain();
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => GameScreen()),
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                GameScreen(category: category),
+                          ),
                         );
                       },
                       child: Text('Try Again'),
