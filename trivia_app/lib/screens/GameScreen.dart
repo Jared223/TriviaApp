@@ -28,29 +28,43 @@ class _GameScreenState extends State<GameScreen> {
 
   @override
 Widget build(BuildContext context) {
-  return Container(
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        fit: BoxFit.cover,
-        image: NetworkImage('https://images.unsplash.com/photo-1579546929662-711aa81148cf'), // replace with your image URL
-      ),
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: Colors.deepPurple,
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
     ),
-    child: Scaffold(
-      backgroundColor: Colors.transparent,
-      body: _questions.isEmpty
-          ? CircularProgressIndicator() // Display a loading indicator
-          : ListView.builder(
-              itemCount: _questions.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_questions[index].question),
-                  // Add more UI elements as per design
-                );
-              },
-            ),
+    body: Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: NetworkImage('https://images.unsplash.com/photo-1579546929662-711aa81148cf'), // replace with your image URL
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: _questions.isEmpty
+            ? CircularProgressIndicator() // Display a loading indicator
+            : ListView.builder(
+                itemCount: _questions.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_questions[index].question),
+                    // Add more UI elements as per design
+                  );
+                },
+              ),
+      ),
     ),
   );
 }
-
-
 }
