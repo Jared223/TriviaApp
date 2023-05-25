@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:trivia_app/models/Settings.dart';
 
 // SettingsScreen
 class SettingsScreen extends StatefulWidget {
@@ -7,10 +9,10 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  double _currentSliderValue = 20;
-
   @override
   Widget build(BuildContext context) {
+    var settings = Provider.of<AppSettings>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -52,14 +54,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               Slider(
-                value: _currentSliderValue,
+                value: settings.textSize,
                 min: 10,
                 max: 30,
                 divisions: 5,
-                label: _currentSliderValue.round().toString(),
+                label: settings.textSize.round().toString(),
                 onChanged: (double value) {
                   setState(() {
-                    _currentSliderValue = value;
+                    settings.updateTextSize(value);
                   });
                 },
               ),

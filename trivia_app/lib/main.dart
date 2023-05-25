@@ -1,15 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'screens/MainMenu.dart';
+import 'screens/SettingsScreen.dart';
+import 'package:trivia_app/models/Settings.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: MainMenu(),
-  ));
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => AppSettings(),
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AppSettings>(create: (_) => AppSettings()),
+      ],
+      child: MaterialApp(
+        title: 'Trivia App',
+        home: MainMenu(),
+      ),
+    );
+  }
 }
 
 class QuestionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var settings = Provider.of<AppSettings>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Trivia App'),
@@ -18,7 +41,12 @@ class QuestionScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Question goes here'),
+            Text(
+              'Question goes here',
+              style: TextStyle(
+                fontSize: settings.textSize,
+              ),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
