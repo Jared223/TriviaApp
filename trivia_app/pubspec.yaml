@@ -14,7 +14,7 @@ dependencies:
   html_character_entities: ^1.0.0
   provider: ^5.0.0
   cupertino_icons: ^1.0.2
-  audioplayers: ^0.20.1
+  audioplayers: ^4.0.1
 
 dev_dependencies:
   flutter_test:

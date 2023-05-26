@@ -21,14 +21,11 @@ class _GameScreenState extends State<GameScreen> {
   int _score = 0;
   bool _gameEnded = false;
 
-  AudioPlayer _audioPlayer = AudioPlayer();
-  bool _isMusicPlaying = false;
 
   @override
   void initState() {
     super.initState();
     _loadTriviaQuestions();
-    _playMusic("amerika.mp3"); // Play the "amerika.mp3" song on the MainMenu
   }
 
   void _loadTriviaQuestions() async {
@@ -68,28 +65,8 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {});
   }
 
-  Future<void> _playMusic(String musicPath) async {
-    await _audioPlayer.stop();
-    await _audioPlayer.play("assets/$musicPath", isLocal: true);
-    setState(() {
-      _isMusicPlaying = true;
-    });
-  }
-
-  void _toggleMusic() {
-    if (_isMusicPlaying) {
-      _audioPlayer.pause();
-    } else {
-      _audioPlayer.resume();
-    }
-    setState(() {
-      _isMusicPlaying = !_isMusicPlaying;
-    });
-  }
-
   @override
   void dispose() async {
-    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -160,14 +137,6 @@ class _GameScreenState extends State<GameScreen> {
                   Text(
                     'Score: $_score',
                     style: TextStyle(fontSize: 24, color: Colors.white),
-                  ),
-                  SizedBox(height: 16),
-                  IconButton(
-                    icon: Icon(
-                      _isMusicPlaying ? Icons.music_note : Icons.music_off,
-                      color: Colors.white,
-                    ),
-                    onPressed: _toggleMusic,
                   ),
                 ],
               ),
