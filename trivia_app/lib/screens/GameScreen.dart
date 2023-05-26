@@ -3,11 +3,10 @@ import '../models/trivia_question.dart';
 import 'package:trivia_app/services/api_service.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'GameOverScreen.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 class GameScreen extends StatefulWidget {
   final String category;
-
+  
   GameScreen({required this.category});
 
   @override
@@ -20,6 +19,7 @@ class _GameScreenState extends State<GameScreen> {
   int _currentQuestionIndex = 0;
   int _score = 0;
   bool _gameEnded = false;
+
 
 
   @override
@@ -41,7 +41,6 @@ class _GameScreenState extends State<GameScreen> {
       _score++;
     } else {
       _gameEnded = true;
-      _playMusic("sonne.mp3"); // Play the "sonne.mp3" song on the GameScreen
       Navigator.push(
         context,
         MaterialPageRoute(
