@@ -1,11 +1,15 @@
-import 'package:flutter/material.dart';
+// Importing necessary packages/screens
+
+import 'package:flutter/material.dart'; 
 import '../models/trivia_question.dart';
 import 'package:trivia_app/services/api_service.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'GameOverScreen.dart';
 import 'dart:async';
 
+
 class GameScreen extends StatefulWidget {
+
   final String category;
 
   GameScreen({required this.category});
@@ -15,6 +19,7 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
+  // Defining variables 
   ApiService _apiService = ApiService();
   List<TriviaQuestion> _questions = [];
   int _currentQuestionIndex = 0;
@@ -23,6 +28,7 @@ class _GameScreenState extends State<GameScreen> {
   int _remainingTime = 15;
   Timer? _timer;
 
+// Initialising states and functions
   @override
   void initState() {
     super.initState();
@@ -30,6 +36,7 @@ class _GameScreenState extends State<GameScreen> {
     _startTimer();
   }
 
+  // Starts the timer 
   void _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
@@ -44,6 +51,7 @@ class _GameScreenState extends State<GameScreen> {
     });
   }
 
+  // Navigation to the game over screen
   void _navigateToGameOverScreen() {
     Navigator.pushReplacement(
       context,
@@ -63,6 +71,7 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 
+  // Resets the game
   void _resetGame() {
     _currentQuestionIndex = 0;
     _score = 0;
@@ -72,6 +81,7 @@ class _GameScreenState extends State<GameScreen> {
     _startTimer();
   }
 
+  // Loads the trivia questions
   void _loadTriviaQuestions() async {
     _questions = await _apiService.fetchTriviaQuestions(widget.category);
     for (var question in _questions) {
@@ -80,6 +90,7 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {});
   }
 
+  // Checks the answer
   void _checkAnswer(String selectedAnswer) {
     if (_questions[_currentQuestionIndex].correctAnswer == selectedAnswer) {
       _score++;
@@ -97,6 +108,7 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {});
   }
 
+  // disposing the functions to prevent memory leaks
   @override
   void dispose() {
     _timer?.cancel();

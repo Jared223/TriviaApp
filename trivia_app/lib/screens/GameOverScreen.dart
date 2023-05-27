@@ -1,16 +1,19 @@
+// Importing required libraries and components.
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'GameScreen.dart';
 import 'package:trivia_app/models/Settings.dart';
 
 
-
+// Defining a stateless widget for the game over screen 
 class GameOverScreen extends StatelessWidget {
+  // required variables (score and category) and callbacks 
   final int score;
   final String category;
   final VoidCallback onTryAgain;
   final VoidCallback onBackToMenu;
 
+  // constructor for GameOverScreen widget. Intitalises the required parameters
   GameOverScreen({
     required this.score,
     required this.category,
@@ -18,14 +21,18 @@ class GameOverScreen extends StatelessWidget {
     required this.onBackToMenu,
   });
 
+  // This method describes the part of the user interface represented by this widget.
   @override
   Widget build(BuildContext context) {
+    // Consumer widget allows listening to AppSettings
     return Consumer<AppSettings>(
       builder: (context, settings, _) {
+        // the layoud for the GameOverScreen is defined here
         return Container(
           decoration: BoxDecoration(
             image: DecorationImage(
               image: NetworkImage(
+                // putting background image
                   'https://images.unsplash.com/photo-1579546929662-711aa81148cf'),
               fit: BoxFit.cover,
             ),
@@ -65,7 +72,7 @@ class GameOverScreen extends StatelessWidget {
                           ),
                         );
                       },
-                      child: Text('Try Again'),
+                      child: Text('Try Again'), // Displays try again
                       style: ElevatedButton.styleFrom(
                         primary: Colors.purple,
                         onPrimary: Colors.white,
@@ -77,7 +84,7 @@ class GameOverScreen extends StatelessWidget {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: onBackToMenu,
-                      child: Text('Back to Menu'),
+                      child: Text('Back to Menu'), // Displays back to menu
                       style: ElevatedButton.styleFrom(
                         primary: Colors.purple,
                         onPrimary: Colors.white,

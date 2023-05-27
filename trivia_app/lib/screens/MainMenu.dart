@@ -13,30 +13,30 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-  String selectedCategory = 'General Knowledge'; // Default selected category
-  final player = AudioPlayer(); // Audio player instance
-  bool isMusicPlaying = true; // Flag to track if music is playing
+  String selectedCategory = 'General Knowledge';
+  final player = AudioPlayer();
+  bool isMusicPlaying = true;
 
   @override
   void initState() {
     super.initState();
-    player.play(AssetSource('audios/amerika.mp3')); // Play music when widget is initialized
+    player.play(AssetSource('audios/amerika.mp3'));
   }
 
   @override
   void dispose() {
-    player.dispose(); // Dispose the audio player when the widget is disposed
+    player.dispose();
     super.dispose();
   }
 
   void toggleMusic() {
     if (isMusicPlaying) {
-      player.setVolume(0.0); // Mute the music if it's playing
+      player.setVolume(0.0);
     } else {
-      player.setVolume(1.0); // Unmute the music if it's muted
+      player.setVolume(1.0);
     }
     setState(() {
-      isMusicPlaying = !isMusicPlaying; // Toggle the isMusicPlaying flag
+      isMusicPlaying = !isMusicPlaying;
     });
   }
 
@@ -58,7 +58,7 @@ class _MainMenuState extends State<MainMenu> {
             Icons.music_note,
             color: Colors.white,
           ),
-          onPressed: toggleMusic, // Call toggleMusic method when note icon is pressed
+          onPressed: toggleMusic,
         ),
         actions: <Widget>[
           IconButton(
@@ -97,7 +97,7 @@ class _MainMenuState extends State<MainMenu> {
                   value: selectedCategory,
                   onChanged: (String? newValue) {
                     setState(() {
-                      selectedCategory = newValue!; // Update the selected category when dropdown value changes
+                      selectedCategory = newValue!;
                     });
                   },
                   items: <String>[
@@ -105,7 +105,11 @@ class _MainMenuState extends State<MainMenu> {
                     'Science',
                     'History',
                     'Geography',
-                    'Arts'
+                    'Arts',
+                    'Books', // Added 'Books' category
+                    'Video Games', // Added 'Video Games' category
+                    'Animals', // Added 'Animals' category
+                    'Television',
                   ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
@@ -143,7 +147,7 @@ class _MainMenuState extends State<MainMenu> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              GameScreen(category: selectedCategory), // Navigate to GameScreen with selected category
+                              GameScreen(category: selectedCategory),
                         ),
                       );
                     },
@@ -174,7 +178,7 @@ class _MainMenuState extends State<MainMenu> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => SettingsScreen()), // Navigate to SettingsScreen
+                        MaterialPageRoute(builder: (context) => SettingsScreen()),
                       );
                     },
                     child: Padding(
@@ -204,7 +208,7 @@ class _MainMenuState extends State<MainMenu> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LeaderboardScreen()), // Navigate to LeaderboardScreen
+                        MaterialPageRoute(builder: (context) => LeaderboardScreen()),
                       );
                     },
                     child: Padding(

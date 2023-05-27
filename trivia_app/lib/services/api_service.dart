@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:trivia_app/models/trivia_question.dart'; // Import the TriviaQuestion class
+import 'package:trivia_app/models/trivia_question.dart';
+import 'dart:math';
+
 
 class ApiService {
   Map<String, String> categoryToApiId = {
@@ -9,18 +11,19 @@ class ApiService {
     'History': '23',
     'Geography': '22',
     'Arts': '25',
+    'Books': '10', // Added 'Books' category with API code 10
+    'Video Games': '15', // Added 'Video Games' category with API code 15
+    'Animals': '27', // Added 'Animals' category with API code 27
+    'Television': '14',
   };
 
   Future<List<TriviaQuestion>> fetchTriviaQuestions(String category) async {
-    final response = await http.get(Uri.parse('https://opentdb.com/api.php?amount=50&category=${categoryToApiId[category]}&difficulty=medium&type=multiple'));
+    final randomSeed = Random().nextInt(10000); // Generate random seed
+    final response = await http.get(Uri.parse('https://opentdb.com/api.php?amount=50&category=${categoryToApiId[category]}&difficulty=medium&type=multiple&seed=$randomSeed'));
 
     if (response.statusCode == 200) {
-      // If the server returns a 200 OK response,
-      // then parse the JSON.
       return parseTriviaQuestions(response.body);
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
       throw Exception('Failed to load trivia questions');
     }
   }
