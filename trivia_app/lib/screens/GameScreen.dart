@@ -52,7 +52,7 @@ class _GameScreenState extends State<GameScreen> {
           score: _score,
           category: widget.category,
           onTryAgain: () {
-            // Reset the game and start a new game
+            _resetGame(); // Reset the game and start a new game
           },
           onBackToMenu: () {
             // Navigate back to the menu
@@ -61,6 +61,15 @@ class _GameScreenState extends State<GameScreen> {
         ),
       ),
     );
+  }
+
+  void _resetGame() {
+    _currentQuestionIndex = 0;
+    _score = 0;
+    _gameEnded = false;
+    _remainingTime = 15;
+    _timer?.cancel();
+    _startTimer();
   }
 
   void _loadTriviaQuestions() async {
@@ -81,6 +90,9 @@ class _GameScreenState extends State<GameScreen> {
     }
     if (!_gameEnded && _currentQuestionIndex < _questions.length - 1) {
       _currentQuestionIndex++;
+      _remainingTime = 15; // Reset the remaining time for the next question
+      _timer?.cancel(); // Cancel the old timer
+      _startTimer(); // Start a new timer for the next question
     }
     setState(() {});
   }
@@ -99,7 +111,7 @@ class _GameScreenState extends State<GameScreen> {
           score: _score,
           category: widget.category,
           onTryAgain: () {
-            // Reset the game and start a new game
+            _resetGame(); // Reset the game and start a new game
           },
           onBackToMenu: () {
             // Navigate back to the menu
@@ -108,7 +120,9 @@ class _GameScreenState extends State<GameScreen> {
         ),
       );
     } else if (_questions.isEmpty) {
-      return CircularProgressIndicator();
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     } else {
       return Container(
         decoration: BoxDecoration(
