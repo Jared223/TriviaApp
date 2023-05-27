@@ -3,10 +3,11 @@ import '../models/trivia_question.dart';
 import 'package:trivia_app/services/api_service.dart';
 import 'package:html_character_entities/html_character_entities.dart';
 import 'GameOverScreen.dart';
+import 'dart:async';
 
 class GameScreen extends StatefulWidget {
   final String category;
-  
+
   GameScreen({required this.category});
 
   @override
@@ -19,13 +20,47 @@ class _GameScreenState extends State<GameScreen> {
   int _currentQuestionIndex = 0;
   int _score = 0;
   bool _gameEnded = false;
-
-
+  int _remainingTime = 15;
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _loadTriviaQuestions();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_remainingTime > 0) {
+          _remainingTime--;
+        } else {
+          _timer?.cancel();
+          _gameEnded = true;
+          _navigateToGameOverScreen();
+        }
+      });
+    });
+  }
+
+  void _navigateToGameOverScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GameOverScreen(
+          score: _score,
+          category: widget.category,
+          onTryAgain: () {
+            // Reset the game and start a new game
+          },
+          onBackToMenu: () {
+            // Navigate back to the menu
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
   }
 
   void _loadTriviaQuestions() async {
@@ -41,22 +76,8 @@ class _GameScreenState extends State<GameScreen> {
       _score++;
     } else {
       _gameEnded = true;
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => GameOverScreen(
-            score: _score,
-            category: widget.category,
-            onTryAgain: () {
-              // Reset the game and start a new game
-            },
-            onBackToMenu: () {
-              // Navigate back to the menu
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      );
+      _timer?.cancel();
+      _navigateToGameOverScreen();
     }
     if (!_gameEnded && _currentQuestionIndex < _questions.length - 1) {
       _currentQuestionIndex++;
@@ -65,7 +86,8 @@ class _GameScreenState extends State<GameScreen> {
   }
 
   @override
-  void dispose() async {
+  void dispose() {
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -117,8 +139,7 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  for (var answer
-                      in _questions[_currentQuestionIndex].allAnswers)
+                  for (var answer in _questions[_currentQuestionIndex].allAnswers)
                     ElevatedButton(
                       onPressed: () => _checkAnswer(answer),
                       child: Text(
@@ -136,6 +157,11 @@ class _GameScreenState extends State<GameScreen> {
                   Text(
                     'Score: $_score',
                     style: TextStyle(fontSize: 24, color: Colors.white),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Time remaining: $_remainingTime',
+                    style: TextStyle(fontSize: 20, color: Colors.red),
                   ),
                 ],
               ),

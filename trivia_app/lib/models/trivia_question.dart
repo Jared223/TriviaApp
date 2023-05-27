@@ -5,6 +5,7 @@ class TriviaQuestion {
   String question;
   String correctAnswer;
   List<String> incorrectAnswers;
+  List<String> allAnswers;
 
   TriviaQuestion({
     required this.category,
@@ -13,15 +14,8 @@ class TriviaQuestion {
     required this.question,
     required this.correctAnswer,
     required this.incorrectAnswers,
-  });
+  }) : allAnswers = (List<String>.from(incorrectAnswers)..add(correctAnswer)..shuffle());
 
-  // All answers (correct and incorrect) shuffled
-  List<String> get allAnswers {
-    var all = List<String>.from(incorrectAnswers)
-      ..add(correctAnswer)
-      ..shuffle();
-    return all;
-  }
 
   factory TriviaQuestion.fromJson(Map<String, dynamic> json) {
     return TriviaQuestion(
